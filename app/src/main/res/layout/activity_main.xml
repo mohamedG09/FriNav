@@ -29,6 +29,7 @@
         android:hint="SIGN UP"
         android:shadowRadius="@android:integer/config_longAnimTime"
         android:background="@drawable/buttonstyle"
+        android:id="@+id/btn_signup"
         />
 
     <Button
@@ -42,6 +43,7 @@
         android:hint="SIGN IN"
         android:shadowRadius="@android:integer/config_longAnimTime"
         android:background="@drawable/buttonstyle"
+        android:id="@+id/btn_signin"
         />
 
 </LinearLayout>

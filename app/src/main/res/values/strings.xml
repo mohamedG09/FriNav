@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MapsTask</string>
+    <string name="email"><font size="20">Email</font></string>
+    <string name="nickname"><font size="20">Nickname</font></string>
+    <string name="phonenumber"><font size="20">Phone number</font></string>
+    <string name="Error"><font size="20">Failed</font></string>
+    <string name="Complete"><font size="20">Done :D</font></string>
+    <string name="Password">Password</string>
+
 </resources>
