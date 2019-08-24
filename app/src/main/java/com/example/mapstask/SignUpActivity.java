@@ -33,7 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
     @OnClick(R.id.btn_signup_act)
     public void btn_signup_act() {
 
-        //btnSignupAct.showLoading();
+        btnSignupAct.showLoading();
 
 
 

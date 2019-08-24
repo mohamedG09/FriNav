@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "925520278609",
+    "firebase_url": "https://friendsnavigator-8b298.firebaseio.com",
+    "project_id": "friendsnavigator-8b298",
+    "storage_bucket": "friendsnavigator-8b298.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925520278609:android:0afb5a2261d31659",
+        "android_client_info": {
+          "package_name": "com.example.mapstask"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925520278609-4nc8gn9slevgj184i1js21kcen67dbi5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mapstask",
+            "certificate_hash": "d1a4181e75e944a2466c5e0c317cd48f9318722f"
+          }
+        },
+        {
+          "client_id": "925520278609-o43ppi7k3v34docm5h6e7l218lvbdpdj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxbDFFB7T_Uiv09_0HhT_fm65FoRYiCLA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925520278609-o43ppi7k3v34docm5h6e7l218lvbdpdj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
