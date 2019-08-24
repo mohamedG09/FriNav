@@ -1,19 +1,46 @@
 package com.example.mapstask;
 
-import android.widget.Toast;
-
 public class User {
 
     private String nickname;
     private String email;
     private String phoneNumber;
     private String password;
+    private double lan;
+    private double lon;
+    private String photoUrl;
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public User() {}
 
     public User(String nickname, String email, String phoneNumber, String password) {
         this.nickname = nickname;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
+    }
+
+    public double getLan() {
+        return lan;
+    }
+
+    public void setLan(double lan) {
+        this.lan = lan;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
     }
 
     public String getNickname() {
@@ -48,7 +75,7 @@ public class User {
     public boolean setPhoneNumber(String phoneNumber) {
 
 
-        if(password.length() != 11)
+        if(phoneNumber.length() != 11)
             return false;
 
         this.phoneNumber = phoneNumber;

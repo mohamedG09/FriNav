@@ -27,7 +27,9 @@
         android:paddingLeft="8dp"
         app:met_baseColor="#fff"
         app:met_floatingLabel="highlight"
-        app:met_primaryColor="@color/colorAccent" />
+        app:met_primaryColor="@color/colorAccent"
+        android:id="@+id/et_email"
+        />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         met_textColorHint="@color/colorAccent"
@@ -42,7 +44,9 @@
         android:paddingLeft="8dp"
         app:met_baseColor="#fff"
         app:met_floatingLabel="highlight"
-        app:met_primaryColor="@color/colorAccent" />
+        app:met_primaryColor="@color/colorAccent"
+        android:id="@+id/et_nickname"
+        />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         met_textColorHint="@color/colorAccent"
@@ -61,6 +65,7 @@
         android:inputType="number"
         app:met_minCharacters="11"
         android:maxLength="11"
+        android:id="@+id/et_phonenumber"
         />
 
     <com.rengwuxian.materialedittext.MaterialEditText
@@ -78,7 +83,7 @@
         app:met_floatingLabel="highlight"
         app:met_primaryColor="@color/colorAccent"
         android:inputType="textPassword"
-
+        android:id="@+id/et_password"
 
         />
 

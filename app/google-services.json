@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "925520278609",
-    "firebase_url": "https://friendsnavigator-8b298.firebaseio.com",
-    "project_id": "friendsnavigator-8b298",
-    "storage_bucket": "friendsnavigator-8b298.appspot.com"
+    "project_number": "565608318949",
+    "firebase_url": "https://frinav-a8813.firebaseio.com",
+    "project_id": "frinav-a8813",
+    "storage_bucket": "frinav-a8813.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:925520278609:android:0afb5a2261d31659",
+        "mobilesdk_app_id": "1:565608318949:android:0afb5a2261d31659",
         "android_client_info": {
           "package_name": "com.example.mapstask"
         }
       },
       "oauth_client": [
         {
-          "client_id": "925520278609-4nc8gn9slevgj184i1js21kcen67dbi5.apps.googleusercontent.com",
+          "client_id": "565608318949-qebt335u10vciu5e7jd9bmk8ht1irjoo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.mapstask",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "925520278609-o43ppi7k3v34docm5h6e7l218lvbdpdj.apps.googleusercontent.com",
+          "client_id": "565608318949-3ag4idcnjg326qv1o0kg579u8s5q21en.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAxbDFFB7T_Uiv09_0HhT_fm65FoRYiCLA"
+          "current_key": "AIzaSyA8k0YgfIIs5nSfUjenVD5sV1XKWuZX-vA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "925520278609-o43ppi7k3v34docm5h6e7l218lvbdpdj.apps.googleusercontent.com",
+              "client_id": "565608318949-3ag4idcnjg326qv1o0kg579u8s5q21en.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
