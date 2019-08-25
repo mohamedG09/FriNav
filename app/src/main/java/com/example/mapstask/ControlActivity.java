@@ -1,6 +1,8 @@
 package com.example.mapstask;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -135,15 +137,33 @@ public class ControlActivity extends AppCompatActivity{
 
 
 
+        //When the screen is opened it will ask for location and when the switch is opened
+        statusCheck();
+        switchLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    statusCheck();
+                }
+                else{
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(ControlActivity.this);
+                    builder.setMessage("GPS must be disabled from operating system")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(final DialogInterface dialog, final int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    final AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            }
+        });
+
+
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
-    }
 
     @OnClick(R.id.profile_image)
     public void pickImage() {
@@ -226,6 +246,41 @@ public class ControlActivity extends AppCompatActivity{
     public void btn_signout() {
         Intent intent = new Intent(ControlActivity.this,LoginActivity.class);
         startActivity(intent);
+    }
+
+    public void statusCheck() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER))//If the user agrees to open location
+                switchLocation.setChecked(true);
+            else
+                switchLocation.setChecked(false);
+        }
+        else{
+            switchLocation.setChecked(true);
+        }
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        switchLocation.setChecked(false);
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }
