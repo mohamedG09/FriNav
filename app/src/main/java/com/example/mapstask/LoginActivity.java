@@ -23,6 +23,8 @@ import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static final String email = "email";
+
     @BindView(R.id.et_email_signin)
     MaterialEditText etEmailSignin;
     @BindView(R.id.et_password_signin)
@@ -40,6 +42,13 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.btn_signin_act)
@@ -74,7 +83,9 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user){
         if(user != null){
             btnSigninAct.hideLoading();
-            startActivity(new Intent(LoginActivity.this,ControlActivity.class));
+            Intent intent = new Intent(LoginActivity.this,ControlActivity.class);
+            intent.putExtra(LoginActivity.email,etEmailSignin.getText().toString().trim());
+            startActivity(intent);
         } else{
             etEmailSignin.setError("Invalid Credentials");
             etPasswordSignin.setError("");

@@ -114,6 +114,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     }
                                 });
                             } else {
+                                Toast.makeText(SignUpActivity.this, task.getException()+"", Toast.LENGTH_SHORT).show();
                                 makeFancyAlert();
                             }
 

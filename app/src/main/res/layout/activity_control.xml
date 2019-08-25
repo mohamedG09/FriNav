@@ -31,7 +31,7 @@
         android:layout_gravity="center"
         />
 
-    \<com.kusu.loadingbutton.LoadingButton
+    <com.kusu.loadingbutton.LoadingButton
         android:id="@+id/btn_mylocation"
         android:layout_width="200dp"
         android:layout_height="51dp"
@@ -49,10 +49,30 @@
         android:layout_gravity="center"
         android:gravity="center"
         />
+    <com.kusu.loadingbutton.LoadingButton
+        android:id="@+id/btn_signout"
+        android:layout_width="200dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="16dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Sign out"
+        android:textColor="@color/white"
+        app:lb_buttonColor="@color/colorPrimary"
+        app:lb_isShadowEnable="true"
+        app:lb_isCircular="true"
+        app:lb_shadowColor="@color/colorPrimaryDark"
+        app:lb_shadowHeight="5dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerview"
+        >
 
     </androidx.recyclerview.widget.RecyclerView>
 

@@ -18,7 +18,8 @@ public class User {
         this.photoUrl = photoUrl;
     }
 
-    public User() {}
+    public User() {
+    }
 
     public User(String nickname, String email, String phoneNumber, String password) {
         this.nickname = nickname;
