@@ -40,5 +40,10 @@ dependencies {
     implementation "com.github.koushikcse:LoadingButton:1.4"
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.github.Shashank02051997:FancyAlertDialog-Android:0.1'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
 
 }

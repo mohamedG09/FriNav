@@ -164,7 +164,12 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     private String cleanEmail(String email){
-       return email.replace(".","_");
+       return email.replace(".","_")
+               .replace("[","_")
+               .replace("$","_")
+               .replace("#","_")
+               .replace("]","_");
+
     }
 
 
