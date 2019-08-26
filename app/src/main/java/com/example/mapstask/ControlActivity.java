@@ -1,13 +1,17 @@
 package com.example.mapstask;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.Settings;
+import android.view.Gravity;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -15,12 +19,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kusu.loadingbutton.LoadingButton;
+import com.onurkaganaldemir.ktoastlib.KToast;
 
 import java.util.ArrayList;
 
@@ -40,7 +49,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ControlActivity extends AppCompatActivity{
+public class ControlActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    public static final String LAN = "lan";
+    public static final String LON = "lon";
+    public static final String NICKNAME = "nickname";
 
     @BindView(R.id.switchLocation)
     Switch switchLocation;
@@ -53,16 +66,19 @@ public class ControlActivity extends AppCompatActivity{
     ArrayList<User> users;
 
     DatabaseReference databaseReference;
+    @BindView(R.id.btn_mylocation)
+    LoadingButton btnMylocation;
 
     private StorageReference mStorageRef;
 
     User currentUser;
-    @BindView(R.id.btn_mylocation)
-    LoadingButton btnMylocation;
     @BindView(R.id.btn_signout)
     LoadingButton btn_signout;
 
     Uri imgUri;
+    GoogleApiClient mGoogleApiClient;
+    LocationRequest mLocationRequest;
+    boolean currentUserDefined;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +86,13 @@ public class ControlActivity extends AppCompatActivity{
         setContentView(R.layout.activity_control);
         ButterKnife.bind(this);
 
+        currentUserDefined = false;
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -92,13 +114,15 @@ public class ControlActivity extends AppCompatActivity{
                     if (user.getEmail().toLowerCase().equals(currentUser.getEmail().toLowerCase())) {
 
 
-                        currentUser.setPhotoUrl(user.getPhotoUrl());
-                        currentUser.setLan(user.getLan());
-                        currentUser.setLon(user.getLon());
-                        currentUser.setNickname(user.getNickname());
-                        currentUser.setPassword(user.getPassword());
-                        currentUser.setPhoneNumber(user.getPhoneNumber());
-
+                        if (!currentUserDefined) {
+                            currentUser.setPhotoUrl(user.getPhotoUrl());
+                            currentUser.setLan(user.getLan());
+                            currentUser.setLon(user.getLon());
+                            currentUser.setNickname(user.getNickname());
+                            currentUser.setPassword(user.getPassword());
+                            currentUser.setPhoneNumber(user.getPhoneNumber());
+                            currentUserDefined = true;
+                        }
 
                         Glide
                                 .with(ControlActivity.this)
@@ -116,7 +140,6 @@ public class ControlActivity extends AppCompatActivity{
 
                 recyclerView.setAdapter(new RecycleAdapterUser(ControlActivity.this, users));
                 recyclerView.setLayoutManager(new LinearLayoutManager(ControlActivity.this));
-                Toast.makeText(ControlActivity.this, "List Updated", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -136,16 +159,15 @@ public class ControlActivity extends AppCompatActivity{
                 .into(profileImage);
 
 
-
         //When the screen is opened it will ask for location and when the switch is opened
         statusCheck();
         switchLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b) {
                     statusCheck();
-                }
-                else{
+                    mGoogleApiClient.connect();
+                } else {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(ControlActivity.this);
                     builder.setMessage("GPS must be disabled from operating system")
                             .setCancelable(false)
@@ -155,11 +177,11 @@ public class ControlActivity extends AppCompatActivity{
                                 }
                             });
                     final AlertDialog alert = builder.create();
+                    mGoogleApiClient.disconnect();
                     alert.show();
                 }
             }
         });
-
 
 
     }
@@ -244,7 +266,8 @@ public class ControlActivity extends AppCompatActivity{
 
     @OnClick(R.id.btn_signout)
     public void btn_signout() {
-        Intent intent = new Intent(ControlActivity.this,LoginActivity.class);
+        Intent intent = new Intent(ControlActivity.this, LoginActivity.class);
+        mGoogleApiClient.disconnect();
         startActivity(intent);
     }
 
@@ -258,8 +281,7 @@ public class ControlActivity extends AppCompatActivity{
                 switchLocation.setChecked(true);
             else
                 switchLocation.setChecked(false);
-        }
-        else{
+        } else {
             switchLocation.setChecked(true);
         }
     }
@@ -270,7 +292,7 @@ public class ControlActivity extends AppCompatActivity{
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -283,4 +305,78 @@ public class ControlActivity extends AppCompatActivity{
         alert.show();
     }
 
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+
+        if (currentUserDefined) {
+            currentUser.setLan(location.getLatitude());
+            currentUser.setLon(location.getLongitude());
+
+            databaseReference.child(cleanEmail(currentUser.getEmail())).setValue(currentUser);
+            currentUserDefined = false;
+        }
+    }
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(10); // Update location every second
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        Toast.makeText(this, "onConnected", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        KToast.warningToast(ControlActivity.this, "Connection Suspended", Gravity.BOTTOM, KToast.LENGTH_AUTO);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        KToast.errorToast(ControlActivity.this, "Connection Failed", Gravity.BOTTOM, KToast.LENGTH_AUTO);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+
+
+    }
+
+    @OnClick(R.id.btn_mylocation)
+    public void btn_mylocation() {
+
+        Intent intent = new Intent(ControlActivity.this,MapsActivity.class);
+        intent.putExtra(ControlActivity.NICKNAME,currentUser.getNickname());
+        intent.putExtra(ControlActivity.LAN,currentUser.getLan());
+        intent.putExtra(ControlActivity.LON,currentUser.getLon());
+        startActivity(intent);
+
+
+
+    }
 }

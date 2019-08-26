@@ -59,7 +59,12 @@ public class RecycleAdapterUser extends RecyclerView.Adapter<RecycleAdapterUser.
             @Override
             public void onClick(View view) {
 
-                //TODO opens the current location on google maps of the users
+                Intent intent = new Intent(view.getContext(),MapsActivity.class);
+                intent.putExtra(ControlActivity.NICKNAME,list.get(position).getNickname());
+                intent.putExtra(ControlActivity.LAN,list.get(position).getLan());
+                intent.putExtra(ControlActivity.LON,list.get(position).getLon());
+                view.getContext().startActivity(intent);
+
             }
         });
 

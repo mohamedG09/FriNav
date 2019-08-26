@@ -6,5 +6,6 @@
     <string name="Error"><font size="20">Failed</font></string>
     <string name="Complete"><font size="20">Done :D</font></string>
     <string name="Password">Password</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

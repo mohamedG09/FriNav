@@ -61,15 +61,16 @@ public class SignUpActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_signup_act)
     public void btn_signup_act() {
-        btnSignupAct.showLoading();
+
+
         try {
 
 
-
+            btnSignupAct.showLoading();
             //User Declaration and validation
             User localuser = new User();
             localuser.setNickname(etNickname.getText().toString());
-            boolean emailCheck = localuser.setEmail(etEmail.getText().toString());
+            boolean emailCheck = localuser.setEmail(etEmail.getText().toString().toLowerCase());
             boolean phoneCheck = localuser.setPhoneNumber(etPhonenumber.getText().toString());
             boolean passwordCheck = localuser.setPassword(etPassword.getText().toString());
 
@@ -95,7 +96,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
 
-            mAuth.createUserWithEmailAndPassword(etEmail.getText().toString().trim(), etPassword.getText().toString().trim())
+            mAuth.createUserWithEmailAndPassword(etEmail.getText().toString().toLowerCase().trim(), etPassword.getText().toString().trim())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -109,11 +110,13 @@ public class SignUpActivity extends AppCompatActivity {
                                             btnSignupAct.hideLoading();
 
                                             startActivity(new Intent(SignUpActivity.this,MainActivity.class));
+                                            btnSignupAct.hideLoading();
 
                                             Toast.makeText(SignUpActivity.this, "Account Made Successfully", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             } else {
+                                btnSignupAct.hideLoading();
                                 Toast.makeText(SignUpActivity.this, task.getException()+"", Toast.LENGTH_SHORT).show();
                                 makeFancyAlert();
                             }
@@ -125,13 +128,15 @@ public class SignUpActivity extends AppCompatActivity {
 
 
 
+
+
         } catch (Exception e) {
 
             e.printStackTrace();
 
-        } finally {
-            btnSignupAct.showLoading();
         }
+
+
 
 
     }
